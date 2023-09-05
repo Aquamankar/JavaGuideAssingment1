@@ -2,6 +2,7 @@ package com.javaguide.departmantservice.service.impl;
 
 import com.javaguide.departmantservice.Mapper.AutoDepartmentMapper;
 import com.javaguide.departmantservice.entity.Department;
+import com.javaguide.departmantservice.exception.ResourceNotFoundException;
 import com.javaguide.departmantservice.payload.DepartmentDTO;
 import com.javaguide.departmantservice.repository.DepartmentRepository;
 import com.javaguide.departmantservice.service.DepartmentService;
@@ -33,8 +34,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentDTO getBydepartmentCode(String departmentCode) {
-        Optional<Department> byDepartmentCode = departmentRepository.findByDepartmentCode(departmentCode);
-        Department department = byDepartmentCode.get();
+//        Optional<Department> byDepartmentCode = departmentRepository.findByDepartmentCode(departmentCode);
+//        Department department = byDepartmentCode.get();
+        Department department = departmentRepository.findByDepartmentCode(departmentCode).
+                orElseThrow(() -> new ResourceNotFoundException("Department", "DepartmentCode", departmentCode));
+
         // DepartmentDTO dto = modelMapper.map(department, DepartmentDTO.class);
         DepartmentDTO dto = AutoDepartmentMapper.MAPPER.mapToDTO(department);
 

@@ -2,6 +2,7 @@ package com.javaguide.employeeservice.service.impl;
 
 import com.javaguide.employeeservice.Mapper.AutoEmployeeMapper;
 import com.javaguide.employeeservice.entity.Employee;
+import com.javaguide.employeeservice.exception.ResourceNotFoundException;
 import com.javaguide.employeeservice.payload.EmployeeDTO;
 import com.javaguide.employeeservice.repository.EmployeeRepository;
 import com.javaguide.employeeservice.service.EmployeeService;
@@ -45,8 +46,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO getemployeeById(long id) {
-        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
-        Employee employee = optionalEmployee.get();
+//        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+//        Employee employee = optionalEmployee.get();
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee", "employeeId", id));
         // EmployeeDTO employeeDTO = modelMapper.map(employee, EmployeeDTO.class);
         return AutoEmployeeMapper.Mapper.mapToDTO(employee);
     }
